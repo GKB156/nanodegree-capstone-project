@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
+
+  <main class="container">
+    <form
+      class="text-center border border-light p-5"
+      id="myForm"
+      method="POST"
+      action="boarding-pass.html"
+      onsubmit="return onProfileSubmitted()"
+    >
+      <p class="h2 mb-4">Boarding Pass Details</p>
+      <div class="form-row mb-4">
+        <div class="col">
+          <!-- Candidate name -->
+          <label for="formcandidatename" class="form-check-label">Candidate Name</label>
+          <input
+            type="text"
+            name="candidateName"
+            id="formcandidatename"
+            class="form-control"
+            placeholder="Enter Candidate Name"
+            aria-label="Candidate Name"
+          />
+        </div>
+        <div class="col">
+          <!-- Interviewer -->
+          <label for="forminterviewer" class="form-check-label">Interviewer Name</label>
+          <input
+            type="text"
+            name="interviewer"
+            id="forminterviewer"
+            class="form-control"
+            placeholder="Enter Interviewer Name"
+            aria-label="Interviewer"
+          />
+        </div>
+      </div>
+      <!--Interview Date-->
+      <label for="forminterview-date" class="form-check-label">Interview Date</label>
+      <input
+        type="text"
+        name="interviewDate"
+        id="forminterview-date"
+        class="form-control mb-4"
+        placeholder="Enter Interview Date (dd/mm/yyyy)"
+        aria-label="Interview Date"
+      />
+
+      <!-- Interview Time  -->
+      <label for="forminterview-time" class="form-check-label">Interview Time</label>
+      <input
+        type="text"
+        name="interviewTime"
+        id="forminterview-time"
+        class="form-control mb-4"
+        placeholder="Enter Interview Time (hh:mm, 24hr)"
+        aria-label="Interview Time"
+      />
+      <!-- Parking Space -->
+      <label for="formparking-space" class="form-check-label">Parking Space</label>
+      <input
+        type="text"
+        name="parkingSpace"
+        id="formparking-space"
+        class="form-control mb-4"
+        placeholder="Enter Parking Space or N/A"
+        aria-label="Parking Space"
+      />
+      <!-- Sign up button -->
+      <button class="btn btn-info my-4 btn-block" type="submit">Generate Boarding Pass</button>
+    </form>
+  </main>
+  <script src="{{url_for('static', filename='main.js')}}"></script>
+</html>
