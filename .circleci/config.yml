@@ -20,8 +20,8 @@ jobs:
       #       - v1-dependencies-{{ checksum "requirements.txt" }}
       #       # fallback to using the latest cache if no exact match is found
       #       - v1-dependencies-
-      - python/install-packages:
-          pkg-manager: pip
+      # - python/install-packages:
+      #     pkg-manager: pip
       - run:
           name: Create virtual env
           command: |
