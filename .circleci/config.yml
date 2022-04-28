@@ -43,11 +43,17 @@ jobs:
           key: v1-dependencies-{{ checksum "requirements.txt" }}
 
   lint-flask-app:
-    - run:
-        name: run lint
-        command: |
-          . venv/bin/activate
-            make lint
+    docker:
+      - image: cimg/python:3.8.1-slim-buster
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [v1-dependencies-{{ checksum "requirements.txt" }}]
+      - run:
+          name: run lint
+          command: |
+            . venv/bin/activate
+              make lint
 
 workflows:
   app_workflow:
