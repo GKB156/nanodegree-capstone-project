@@ -3,7 +3,10 @@ FROM python:3.8.1-slim-buster
 WORKDIR /capstone-project
 
 COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+# RUN pip install -r requirements.txt
+# hadolint ignore=DL3013
+RUN pip3 install --no-cache-dir --upgrade pip &&\
+    pip3 install --no-cache-dir --trusted-host pypi.python.org -r requirements.txt
 
 COPY public public
 COPY static static
