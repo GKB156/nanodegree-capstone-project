@@ -84,10 +84,10 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - run: yum -y install tar gzip
       - restore_cache:
           keys:
             - v1-{{ .Branch }}-{{ epoch }}
-      - run: yum -y install tar gzip
       - run:
           name: Ensure ECR exists
           command: |
@@ -99,14 +99,13 @@ jobs:
               --repository-names ${REPO_NAME} \
               --query 'repositories[*].repositoryUri' \
               --output text)
-            # echo "[web]" >> inventory.txt              
             echo "$ECR_AWS_URI" >> inventory.txt              
             pwd
             cat inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
-            - repo/inventory.txt
+            - inventory.txt
       - run:
           name: Push application Docker image
           command: |
