@@ -75,7 +75,7 @@ jobs:
             mkdir -p /caches
             docker save -o /caches/app.tar app
       - save_cache:
-          key: v1-{{ .Branch }}-{{ epoch }}
+          key: v1-{{ .Branch }}-${CIRCLE_WORKFLOW_ID:0:7}
           paths:
             - /caches/app.tar
 
@@ -87,7 +87,7 @@ jobs:
       - run: yum -y install tar gzip
       - restore_cache:
           keys:
-            - v1-{{ .Branch }}-{{ epoch }}
+            - v1-{{ .Branch }}-${CIRCLE_WORKFLOW_ID:0:7}
       - run:
           name: Ensure ECR exists
           command: |
