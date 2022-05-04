@@ -97,7 +97,7 @@ jobs:
           command: |
             ECR_AWS_URI=$(aws ecr describe-repositories \
               --repository-names ${REPO_NAME} \
-              --query 'repositoryUri' \
+              --query 'repositories[*].repositoryUri' \
               --output text)
             echo "[web]" >> inventory.txt              
             echo "$ECR_AWS_URI" >> inventory.txt              
