@@ -102,7 +102,7 @@ jobs:
             echo "$ECR_AWS_URI" >> inventory.txt              
             pwd
             cat inventory.txt
-            echo ${ECR_AWS_URI] = "${ECR_AWS_URI}"
+            echo ${ECR_AWS_URI} = "${ECR_AWS_URI}"
       - persist_to_workspace:
           root: ~/
           paths:
