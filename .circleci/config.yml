@@ -115,6 +115,8 @@ jobs:
               --query 'repositories[*].repositoryUri' \
               --output text)
             echo ECR_AWS_URI: ${ECR_AWS_URI}
+            echo CIRCLE_BRANCH: ${CIRCLE_BRANCH}
+            echo REPO_NAME: ${REPO_NAME}
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR_AWS_URI}
               docker tag ${REPO_NAME}:latest ${ECR_AWS_URI}:latest
