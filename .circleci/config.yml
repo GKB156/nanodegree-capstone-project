@@ -78,35 +78,32 @@ jobs:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
             - /caches/app.tar
-    # docker:
-    #   - image: cimg/base:stable
-    # working_directory: ~/repo
-    # steps:
-    #   - checkout
-    #   # Download and cache dependencies
-    #   - restore_cache:
-    #       keys:
-    #         - v1-dependencies-{{ checksum "requirements.txt" }}
-    #         # fallback to using the latest cache if no exact match is found
-    #         - v1-dependencies-
-    #   - run:
-    #       name: Build docker image
-    #       command: |
-    #         docker image build -t flask_app .
-    #         echo "Docker image built"
 
-  # deploy-infrastructure:
-  #   docker:
-  #     - image: amazon/aws-cli
-  #   steps:
-  #     - checkout
-  #     - run: yum -y install tar gzip
+  deploy-infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run: yum -y install tar gzip
+      - run:
+          name: Ensure ECR exists
+          command: |
+            aws ecr describe-repositories --repository-names ${REPO_NAME} || aws ecr create-repository --repository-name ${REPO_NAME}
+      # - run:
+      #     name: Ensure aws infrastructure exists
+      #     command: |
+      #       aws cloudformation deploy \
+      #         --template-file aws-infra.yml \
+      #         --tags project=captstone \
+      #         --stack-name "capstone-${CIRCLE_WORKFLOW_ID:0:7}" \
+      #         --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
 
 workflows:
   deployment:
     jobs:
       - build-env
       - build-docker-image
+      - deploy-infrastructure
 # Build environment
 # Lint docker image
 # Build docker image
