@@ -95,13 +95,14 @@ jobs:
       - run:
           name: Add ECR URI to inventory
           command: |
-            ECR_AWS_URI=$(aws ecr describe-repositories \
+            export ECR_AWS_URI=$(aws ecr describe-repositories \
               --repository-names ${REPO_NAME} \
               --query 'repositories[*].repositoryUri' \
               --output text)
             echo "$ECR_AWS_URI" >> inventory.txt              
             pwd
             cat inventory.txt
+            echo ${ECR_AWS_URI] = "${ECR_AWS_URI}"
       - persist_to_workspace:
           root: ~/
           paths:
