@@ -128,7 +128,8 @@ workflows:
     jobs:
       - build-env
       - build-docker-image
-      - deploy-infrastructure
+      - deploy-infrastructure:
+          requires: [build-docker-image]
 # Build environment
 # Lint docker image
 # Build docker image
