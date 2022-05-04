@@ -99,7 +99,7 @@ jobs:
               --repository-names ${REPO_NAME} \
               --query 'repositories[*].repositoryUri' \
               --output text)
-            echo "[web]" >> inventory.txt              
+            # echo "[web]" >> inventory.txt              
             echo "$ECR_AWS_URI" >> inventory.txt              
             pwd
             cat inventory.txt
