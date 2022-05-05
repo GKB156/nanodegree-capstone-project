@@ -109,6 +109,8 @@ jobs:
             echo REPO_NAME: ${REPO_NAME}
             if [ "${CIRCLE_BRANCH}" == "main" ]; then
               aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR_AWS_URI}
+            echo LOGIN: "$(aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR_AWS_URI})"
+              docker build -t capstone-project .
               docker tag ${REPO_NAME}:latest ${ECR_AWS_URI}:latest
               docker push ${ECR_AWS_URI}:latest
             fi
