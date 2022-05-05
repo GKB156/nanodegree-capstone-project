@@ -119,7 +119,7 @@ jobs:
 
   deploy-infrastructure:
     docker:
-      - image: amazon/aws-cli
+      - image: python:3.7.3-stretch
     steps:
       - checkout
       - restore_cache:
@@ -135,27 +135,28 @@ jobs:
       #     command: |
       #       # yum install -y tar gzip
       #       apk add --no-cache tar
-      # - run:
-      #     name: Install awscli
+      - run:
+          name: Install awscli and docker
       #     command: |
       #       # pwd
       #       # apk add curl
       #       # apk add --no-cache python3 py3-pip
       #       python3 -m venv venv
       #       . venv/bin/activate
-      #       pip3 install --upgrade pip
-      #       pip3 install awscli
+            pip3 install --upgrade pip
+            pip3 install awscli
+            pip3 install docker
       # - restore_cache:
       #     keys:
       #       - v1-{{ .Branch }}-${CIRCLE_WORKFLOW_ID:0:7}
-      - run:
-          name: Install Docker Compose
-          environment:
-            COMPOSE_VERSION: "1.29.2"
-          command: |
-            curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o ~/docker-compose
-            chmod +x ~/docker-compose
-            sudo mv ~/docker-compose /usr/local/bin/docker-compose
+      # - run:
+      #     name: Install Docker Compose
+      #     environment:
+      #       COMPOSE_VERSION: "1.29.2"
+      #     command: |
+      #       curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o ~/docker-compose
+      #       chmod +x ~/docker-compose
+      #       sudo mv ~/docker-compose /usr/local/bin/docker-compose
       - run:
           name: Ensure ECR exists
           command: |
