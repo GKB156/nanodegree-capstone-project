@@ -78,21 +78,68 @@ jobs:
           key: v1-{{ .Branch }}-${CIRCLE_WORKFLOW_ID:0:7}
           paths:
             - /caches/app.tar
+      # - run:
+      #     name: Ensure ECR exists
+      #     command: |
+      #       aws ecr describe-repositories --repository-names ${REPO_NAME} || aws ecr create-repository --repository-name ${REPO_NAME}
+      # - run:
+      #     name: Add ECR URI to inventory
+      #     command: |
+      #       export ECR_AWS_URI=$(aws ecr describe-repositories \
+      #         --repository-names ${REPO_NAME} \
+      #         --query 'repositories[*].repositoryUri' \
+      #         --output text)
+      #       echo "$ECR_AWS_URI" >> inventory.txt
+      #       pwd
+      #       cat inventory.txt
+      #       echo ECR_AWS_URI: "${ECR_AWS_URI}"
+      # - persist_to_workspace:
+      #     root: ~/
+      #     paths:
+      #       - project/inventory.txt
+      # - run:
+      #     name: Push application Docker image
+      #     command: |
+      #       export ECR_AWS_URI=$(aws ecr describe-repositories \
+      #         --repository-names ${REPO_NAME} \
+      #         --query 'repositories[*].repositoryUri' \
+      #         --output text)
+      #       echo ECR_AWS_URI: ${ECR_AWS_URI}
+      #       echo CIRCLE_BRANCH: ${CIRCLE_BRANCH}
+      #       echo REPO_NAME: ${REPO_NAME}
+      #       if [ "${CIRCLE_BRANCH}" == "main" ]; then
+      #         aws ecr get-login-password --region us-east-1 | docker login\
+      #         --username AWS --password-stdin\
+      #         343591568300.dkr.ecr.us-east-1.amazonaws.com
+      #         docker build -t capstone-project .
+      #         docker tag ${REPO_NAME}:latest ${ECR_AWS_URI}:latest
+      #         docker push ${ECR_AWS_URI}:latest
+      #       fi
+
+  deploy-infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run: yum -y install tar gzip
+      - restore_cache:
+          keys:
+            - v1-{{ .Branch }}-${CIRCLE_WORKFLOW_ID:0:7}
       - run:
           name: Ensure ECR exists
           command: |
             aws ecr describe-repositories --repository-names ${REPO_NAME} || aws ecr create-repository --repository-name ${REPO_NAME}
-      - run:
-          name: Add ECR URI to inventory
-          command: |
-            export ECR_AWS_URI=$(aws ecr describe-repositories \
-              --repository-names ${REPO_NAME} \
-              --query 'repositories[*].repositoryUri' \
-              --output text)
-            echo "$ECR_AWS_URI" >> inventory.txt              
-            pwd
-            cat inventory.txt
-            echo ECR_AWS_URI: "${ECR_AWS_URI}"
+      # - run:
+      #     name: Add ECR URI to inventory
+      #     command: |
+      #       export ECR_AWS_URI=$(aws ecr describe-repositories \
+      #         --repository-names ${REPO_NAME} \
+      #         --query 'repositories[*].repositoryUri' \
+      #         --output text)
+      #       echo "$ECR_AWS_URI" >> inventory.txt
+      #       pwd
+      #       cat inventory.txt
+      #       echo ECR_AWS_URI: "${ECR_AWS_URI}"
       - persist_to_workspace:
           root: ~/
           paths:
@@ -104,9 +151,11 @@ jobs:
               --repository-names ${REPO_NAME} \
               --query 'repositories[*].repositoryUri' \
               --output text)
+
             echo ECR_AWS_URI: ${ECR_AWS_URI}
             echo CIRCLE_BRANCH: ${CIRCLE_BRANCH}
             echo REPO_NAME: ${REPO_NAME}
+
             if [ "${CIRCLE_BRANCH}" == "main" ]; then
               aws ecr get-login-password --region us-east-1 | docker login\
               --username AWS --password-stdin\
@@ -115,50 +164,6 @@ jobs:
               docker tag ${REPO_NAME}:latest ${ECR_AWS_URI}:latest
               docker push ${ECR_AWS_URI}:latest
             fi
-
-  # deploy-infrastructure:
-  #   docker:
-  #     - image: amazon/aws-cli
-  #   steps:
-  #     - checkout
-  #     - run: yum -y install tar gzip
-  #     - restore_cache:
-  #         keys:
-  #           - v1-{{ .Branch }}-${CIRCLE_WORKFLOW_ID:0:7}
-  #     - run:
-  #         name: Ensure ECR exists
-  #         command: |
-  #           aws ecr describe-repositories --repository-names ${REPO_NAME} || aws ecr create-repository --repository-name ${REPO_NAME}
-  #     - run:
-  #         name: Add ECR URI to inventory
-  #         command: |
-  #           export ECR_AWS_URI=$(aws ecr describe-repositories \
-  #             --repository-names ${REPO_NAME} \
-  #             --query 'repositories[*].repositoryUri' \
-  #             --output text)
-  #           echo "$ECR_AWS_URI" >> inventory.txt
-  #           pwd
-  #           cat inventory.txt
-  #           echo ECR_AWS_URI: "${ECR_AWS_URI}"
-  #     - persist_to_workspace:
-  #         root: ~/
-  #         paths:
-  #           - project/inventory.txt
-  #     - run:
-  #         name: Push application Docker image
-  #         command: |
-  #           export ECR_AWS_URI=$(aws ecr describe-repositories \
-  #             --repository-names ${REPO_NAME} \
-  #             --query 'repositories[*].repositoryUri' \
-  #             --output text)
-  #           echo ECR_AWS_URI: ${ECR_AWS_URI}
-  #           echo CIRCLE_BRANCH: ${CIRCLE_BRANCH}
-  #           echo REPO_NAME: ${REPO_NAME}
-  #           if [ "${CIRCLE_BRANCH}" == "main" ]; then
-  #             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR_AWS_URI}
-  #             docker tag ${REPO_NAME}:latest ${ECR_AWS_URI}:latest
-  #             docker push ${ECR_AWS_URI}:latest
-  #           fi
   # - run:
   #     name: Ensure aws infrastructure exists
   #     command: |
@@ -173,8 +178,8 @@ workflows:
     jobs:
       - build-env
       - build-docker-image
-      # - deploy-infrastructure:
-      #     requires: [build-docker-image]
+      - deploy-infrastructure:
+          requires: [build-docker-image]
 # Build environment
 # Lint docker image
 # Build docker image
