@@ -49,8 +49,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add --no-cache \
-              py-pip=9.0.0-r1
-            apk add --update py-pip
+              py-pip
             pip install \
               docker-compose \
               awscli
