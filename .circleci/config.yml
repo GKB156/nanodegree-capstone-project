@@ -73,7 +73,7 @@ jobs:
           name: Save Docker image layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/app.tar app
+            docker save -o /caches/app.tar capstone-project
       - save_cache:
           key: v1-{{ .Branch }}-${CIRCLE_WORKFLOW_ID:0:7}
           paths:
