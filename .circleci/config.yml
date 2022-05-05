@@ -62,29 +62,29 @@ jobs:
             - ./venv
             - /caches/app.tar
 
-  - run:
-      name: Ensure ECR exists
-      command: |
-        aws ecr describe-repositories --repository-names ${REPO_NAME} || aws ecr create-repository --repository-name ${REPO_NAME}
+      - run:
+          name: Ensure ECR exists
+          command: |
+            aws ecr describe-repositories --repository-names ${REPO_NAME} || aws ecr create-repository --repository-name ${REPO_NAME}
 
-  - run:
-      name: Push application Docker image
-      command: |
-        export ECR_AWS_URI=$(aws ecr describe-repositories \
-          --repository-names ${REPO_NAME} \
-          --query 'repositories[*].repositoryUri' \
-          --output text)
-        echo ECR_AWS_URI: ${ECR_AWS_URI}
-        echo CIRCLE_BRANCH: ${CIRCLE_BRANCH}
-        echo REPO_NAME: ${REPO_NAME}
-        if [ "${CIRCLE_BRANCH}" == "main" ]; then
-          aws ecr get-login-password --region us-east-1 | docker login\
-          --username AWS --password-stdin\
-          343591568300.dkr.ecr.us-east-1.amazonaws.com
-          docker build -t capstone-project .
-          docker tag ${REPO_NAME}:latest ${ECR_AWS_URI}:latest
-          docker push ${ECR_AWS_URI}:latest
-        fi
+      - run:
+          name: Push application Docker image
+          command: |
+            export ECR_AWS_URI=$(aws ecr describe-repositories \
+              --repository-names ${REPO_NAME} \
+              --query 'repositories[*].repositoryUri' \
+              --output text)
+            echo ECR_AWS_URI: ${ECR_AWS_URI}
+            echo CIRCLE_BRANCH: ${CIRCLE_BRANCH}
+            echo REPO_NAME: ${REPO_NAME}
+            if [ "${CIRCLE_BRANCH}" == "main" ]; then
+              aws ecr get-login-password --region us-east-1 | docker login\
+              --username AWS --password-stdin\
+              343591568300.dkr.ecr.us-east-1.amazonaws.com
+              docker build -t capstone-project .
+              docker tag ${REPO_NAME}:latest ${ECR_AWS_URI}:latest
+              docker push ${ECR_AWS_URI}:latest
+            fi
 
   # deploy-infrastructure:
   #   docker:
