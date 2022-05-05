@@ -51,8 +51,8 @@ jobs:
             apk add --no-cache \
               py-pip
             pip install \
-              docker-compose \
-              awscli
+              docker-compose==1.29.2 \
+              awscli==1.23.7
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "requirements.txt" }}
