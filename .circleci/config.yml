@@ -39,89 +39,20 @@ jobs:
             . venv/bin/activate
               make lint
 
-  # build-docker-image:
-  #   docker:
-  #     - image: docker:17.05.0-ce-git
-  #   steps:
-  #     - checkout
-  #     - setup_remote_docker
-  #     - run:
-  #         name: Install dependencies
-  #         command: |
-  #           apk add --no-cache \
-  #             py-pip=9.0.0-r1
-  #           # pip install \
-  #           #   docker-compose==1.12.0 \
-  #           #   awscli==1.11.76
-  #     - restore_cache:
-  #         keys:
-  #           - v1-dependencies-{{ checksum "requirements.txt" }}
-  #           # fallback to using the latest cache if no exact match is found
-  #           - v1-dependencies-
-  #         paths:
-  #           - ./venv
-  #           - /caches/app.tar
-  #     - run:
-  #         name: Load Docker image layer cache
-  #         command: |
-  #           set +o pipefail
-  #           docker load -i /caches/app.tar | true
-  #     - run:
-  #         name: Build application Docker image
-  #         command: |
-  #           docker build --cache-from=app -t capstone-project .
-  #     - run:
-  #         name: Save Docker image layer cache
-  #         command: |
-  #           mkdir -p /caches
-  #           docker save -o /caches/app.tar capstone-project
-  #     - save_cache:
-  #         key: v1-{{ .Branch }}-${CIRCLE_WORKFLOW_ID:0:7}
-  #         paths:
-  #           - /caches/app.tar
-  # - run:
-  #     name: Ensure ECR exists
-  #     command: |
-  #       aws ecr describe-repositories --repository-names ${REPO_NAME} || aws ecr create-repository --repository-name ${REPO_NAME}
-  # - run:
-  #     name: Add ECR URI to inventory
-  #     command: |
-  #       export ECR_AWS_URI=$(aws ecr describe-repositories \
-  #         --repository-names ${REPO_NAME} \
-  #         --query 'repositories[*].repositoryUri' \
-  #         --output text)
-  #       echo "$ECR_AWS_URI" >> inventory.txt
-  #       pwd
-  #       cat inventory.txt
-  #       echo ECR_AWS_URI: "${ECR_AWS_URI}"
-  # - persist_to_workspace:
-  #     root: ~/
-  #     paths:
-  #       - project/inventory.txt
-  # - run:
-  #     name: Push application Docker image
-  #     command: |
-  #       export ECR_AWS_URI=$(aws ecr describe-repositories \
-  #         --repository-names ${REPO_NAME} \
-  #         --query 'repositories[*].repositoryUri' \
-  #         --output text)
-  #       echo ECR_AWS_URI: ${ECR_AWS_URI}
-  #       echo CIRCLE_BRANCH: ${CIRCLE_BRANCH}
-  #       echo REPO_NAME: ${REPO_NAME}
-  #       if [ "${CIRCLE_BRANCH}" == "main" ]; then
-  #         aws ecr get-login-password --region us-east-1 | docker login\
-  #         --username AWS --password-stdin\
-  #         343591568300.dkr.ecr.us-east-1.amazonaws.com
-  #         docker build -t capstone-project .
-  #         docker tag ${REPO_NAME}:latest ${ECR_AWS_URI}:latest
-  #         docker push ${ECR_AWS_URI}:latest
-  #       fi
-
-  deploy-infrastructure:
+  build-docker-image:
     docker:
-      - image: python:3.7.3-stretch
+      - image: docker:17.05.0-ce-git
     steps:
       - checkout
+      - setup_remote_docker
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --no-cache \
+              py-pip=9.0.0-r1
+            # pip install \
+            #   docker-compose==1.12.0 \
+            #   awscli==1.11.76
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "requirements.txt" }}
@@ -129,65 +60,77 @@ jobs:
             - v1-dependencies-
           paths:
             - ./venv
-            # - /caches/app.tar
-      # - run:
-      #     name: Install tar utility
-      #     command: |
-      #       # yum install -y tar gzip
-      #       apk add --no-cache tar
-      - run:
-          name: Install awscli and docker
-          command: |
-            pip3 install --upgrade pip
-            pip3 install awscli
-            pip3 install docker
-      #       # pwd
-      #       # apk add curl
-      #       # apk add --no-cache python3 py3-pip
-      #       python3 -m venv venv
-      #       . venv/bin/activate
-      # - restore_cache:
-      #     keys:
-      #       - v1-{{ .Branch }}-${CIRCLE_WORKFLOW_ID:0:7}
-      - run:
-          name: Ensure ECR exists
-          command: |
-            aws ecr describe-repositories --repository-names ${REPO_NAME} || aws ecr create-repository --repository-name ${REPO_NAME}
-      # - run:
-      #     name: Add ECR URI to inventory
-      #     command: |
-      #       export ECR_AWS_URI=$(aws ecr describe-repositories \
-      #         --repository-names ${REPO_NAME} \
-      #         --query 'repositories[*].repositoryUri' \
-      #         --output text)
-      #       echo "$ECR_AWS_URI" >> inventory.txt
-      #       pwd
-      #       cat inventory.txt
-      #       echo ECR_AWS_URI: "${ECR_AWS_URI}"
-      # - persist_to_workspace:
-      #     root: ~/
-      #     paths:
-      #       - project/inventory.txt
-      - run:
-          name: Push application Docker image
-          command: |
-            export ECR_AWS_URI=$(aws ecr describe-repositories \
-              --repository-names ${REPO_NAME} \
-              --query 'repositories[*].repositoryUri' \
-              --output text)
+            - /caches/app.tar
 
-            echo ECR_AWS_URI: ${ECR_AWS_URI}
-            echo CIRCLE_BRANCH: ${CIRCLE_BRANCH}
-            echo REPO_NAME: ${REPO_NAME}
+  - run:
+      name: Ensure ECR exists
+      command: |
+        aws ecr describe-repositories --repository-names ${REPO_NAME} || aws ecr create-repository --repository-name ${REPO_NAME}
 
-            if [ "${CIRCLE_BRANCH}" == "main" ]; then
-              aws ecr get-login-password --region us-east-1 | docker login\
-              --username AWS --password-stdin\
-              343591568300.dkr.ecr.us-east-1.amazonaws.com
-              docker build -t capstone-project .
-              docker tag ${REPO_NAME}:latest ${ECR_AWS_URI}:latest
-              docker push ${ECR_AWS_URI}:latest
-            fi
+  - run:
+      name: Push application Docker image
+      command: |
+        export ECR_AWS_URI=$(aws ecr describe-repositories \
+          --repository-names ${REPO_NAME} \
+          --query 'repositories[*].repositoryUri' \
+          --output text)
+        echo ECR_AWS_URI: ${ECR_AWS_URI}
+        echo CIRCLE_BRANCH: ${CIRCLE_BRANCH}
+        echo REPO_NAME: ${REPO_NAME}
+        if [ "${CIRCLE_BRANCH}" == "main" ]; then
+          aws ecr get-login-password --region us-east-1 | docker login\
+          --username AWS --password-stdin\
+          343591568300.dkr.ecr.us-east-1.amazonaws.com
+          docker build -t capstone-project .
+          docker tag ${REPO_NAME}:latest ${ECR_AWS_URI}:latest
+          docker push ${ECR_AWS_URI}:latest
+        fi
+
+  # deploy-infrastructure:
+  #   docker:
+  #     - image: python:3.7.3-stretch
+  #   steps:
+  #     - checkout
+  #     - restore_cache:
+  #         keys:
+  #           - v1-dependencies-{{ checksum "requirements.txt" }}
+  #           # fallback to using the latest cache if no exact match is found
+  #           - v1-dependencies-
+  #         paths:
+  #           - ./venv
+
+  #     - run:
+  #         name: Install awscli and docker
+  #         command: |
+  #           pip3 install --upgrade pip
+  #           pip3 install awscli
+  #           pip3 install docker
+
+  #     - run:
+  #         name: Ensure ECR exists
+  #         command: |
+  #           aws ecr describe-repositories --repository-names ${REPO_NAME} || aws ecr create-repository --repository-name ${REPO_NAME}
+
+  #     - run:
+  #         name: Push application Docker image
+  #         command: |
+  #           export ECR_AWS_URI=$(aws ecr describe-repositories \
+  #             --repository-names ${REPO_NAME} \
+  #             --query 'repositories[*].repositoryUri' \
+  #             --output text)
+
+  #           echo ECR_AWS_URI: ${ECR_AWS_URI}
+  #           echo CIRCLE_BRANCH: ${CIRCLE_BRANCH}
+  #           echo REPO_NAME: ${REPO_NAME}
+
+  #           if [ "${CIRCLE_BRANCH}" == "main" ]; then
+  #             aws ecr get-login-password --region us-east-1 | docker login\
+  #             --username AWS --password-stdin\
+  #             343591568300.dkr.ecr.us-east-1.amazonaws.com
+  #             docker build -t capstone-project .
+  #             docker tag ${REPO_NAME}:latest ${ECR_AWS_URI}:latest
+  #             docker push ${ECR_AWS_URI}:latest
+  #           fi
   # - run:
   #     name: Ensure aws infrastructure exists
   #     command: |
@@ -201,9 +144,9 @@ workflows:
   deployment:
     jobs:
       - build-env
-      # - build-docker-image
-      - deploy-infrastructure:
-          requires: [build-env]
+      - build-docker-image
+      # - deploy-infrastructure:
+      #     requires: [build-env]
       # - deploy-infrastructure:
       #     requires: [build-docker-image]
 # Build environment to lint project files
