@@ -201,8 +201,9 @@ workflows:
     jobs:
       - build-env
       # - build-docker-image
-      - deploy-infrastructure:
-          requires: [build-docker-image]
+      - deploy-infrastructure
+      # - deploy-infrastructure:
+      #     requires: [build-docker-image]
 # Build environment to lint project files
 # Lint docker image and python files
 # Create ECR repo (or check it exists)
