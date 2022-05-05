@@ -138,9 +138,9 @@ jobs:
       - run:
           name: Install awscli
           command: |
-            pwd
-            apk add curl
-            apk add --no-cache python3 py3-pip
+            # pwd
+            # apk add curl
+            # apk add --no-cache python3 py3-pip
             python3 -m venv venv
             . venv/bin/activate
             pip3 install --upgrade pip
@@ -201,7 +201,8 @@ workflows:
     jobs:
       - build-env
       # - build-docker-image
-      - deploy-infrastructure
+      - deploy-infrastructure:
+          requires: [build-env]
       # - deploy-infrastructure:
       #     requires: [build-docker-image]
 # Build environment to lint project files
