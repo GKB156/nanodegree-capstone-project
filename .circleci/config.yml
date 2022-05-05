@@ -121,7 +121,11 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
-      - run: yum -y install tar gzip
+      - run:
+          name: Install tar utility
+          command: |
+            # yum install -y tar gzip
+            apk add --no-cache tar
       - run:
           name: Install awscli
           command: |
