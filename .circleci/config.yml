@@ -118,10 +118,18 @@ jobs:
 
   deploy-infrastructure:
     docker:
-      - image: amazon/aws-cli
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - run: yum -y install tar gzip
+      - run:
+          name: Install awscli
+          command: |
+            pwd
+            apk add curl
+            apk add --no-cache python3 py3-pip
+            pip3 install --upgrade pip
+            pip3 install awscli
       - restore_cache:
           keys:
             - v1-{{ .Branch }}-${CIRCLE_WORKFLOW_ID:0:7}
