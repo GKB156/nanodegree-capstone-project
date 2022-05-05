@@ -137,7 +137,7 @@ jobs:
       #       apk add --no-cache tar
       - run:
           name: Install awscli and docker
-      #     command: |
+          command: |
       #       # pwd
       #       # apk add curl
       #       # apk add --no-cache python3 py3-pip
