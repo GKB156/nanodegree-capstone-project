@@ -119,7 +119,7 @@ jobs:
 
   deploy-infrastructure:
     docker:
-      - image: python:3.7.3-stretch
+      - image: amazon/aws-cli
     steps:
       - checkout
       - restore_cache:
@@ -135,16 +135,16 @@ jobs:
       #     command: |
       #       # yum install -y tar gzip
       #       apk add --no-cache tar
-      - run:
-          name: Install awscli
-          command: |
-            # pwd
-            # apk add curl
-            # apk add --no-cache python3 py3-pip
-            python3 -m venv venv
-            . venv/bin/activate
-            pip3 install --upgrade pip
-            pip3 install awscli
+      # - run:
+      #     name: Install awscli
+      #     command: |
+      #       # pwd
+      #       # apk add curl
+      #       # apk add --no-cache python3 py3-pip
+      #       python3 -m venv venv
+      #       . venv/bin/activate
+      #       pip3 install --upgrade pip
+      #       pip3 install awscli
       # - restore_cache:
       #     keys:
       #       - v1-{{ .Branch }}-${CIRCLE_WORKFLOW_ID:0:7}
