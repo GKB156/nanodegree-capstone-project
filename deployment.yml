@@ -17,4 +17,5 @@ spec:
         - name: capstone-project-container
           image: ${ECR_AWS_URI}:latest
           ports:
-            - containerPort: 80
+            # - containerPort: 80
+            - containerPort: 5000
