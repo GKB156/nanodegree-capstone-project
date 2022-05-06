@@ -71,6 +71,7 @@ jobs:
       - run:
           name: Push application Docker image
           command: |
+            systemctl start docker
             export ECR_AWS_URI=$(aws ecr describe-repositories \
               --repository-names ${REPO_NAME} \
               --query 'repositories[*].repositoryUri' \
@@ -81,7 +82,7 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "main" ]; then
               aws ecr get-login-password --region us-east-1 | docker login\
               --username AWS --password-stdin\
-              343591568300.dkr.ecr.us-east-1.amazonaws.com
+              ${ECR_AWS_URI}
               docker build -t capstone-project .
               docker tag ${REPO_NAME}:latest ${ECR_AWS_URI}:latest
               docker push ${ECR_AWS_URI}:latest
