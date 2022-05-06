@@ -45,7 +45,7 @@ jobs:
       - image: guitarrapc/docker-awscli-kubectl
     steps:
       - checkout
-      # - setup_remote_docker
+      - setup_remote_docker
       # - run:
       #     name: Install dependencies
       #     command: |
