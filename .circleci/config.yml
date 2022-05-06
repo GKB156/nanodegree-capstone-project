@@ -84,10 +84,22 @@ jobs:
               --stack-name "capstone-project" \
               --parameter-overrides ID="capstone-project"
 
-      - run:
-          name: Spin up ECS cluster
-          command: |
-            eksctl create cluster -f cluster.yml
+    deploy-clusters:
+      docker:
+        - image: amazon/aws-cli
+      steps:
+        - checkout
+        - run: yum -y install tar gzip
+        - run:
+            name: Install eksctl
+            command: |
+              curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+              sudo mv /tmp/eksctl /usr/local/bin
+              echo eksctl version
+        - run:
+            name: Spin up ECS cluster
+            command: |
+              eksctl create cluster -f cluster.yml
 
 workflows:
   deployment:
@@ -96,6 +108,8 @@ workflows:
       - build-and-push-docker-image
       - deploy-infrastructure:
           requires: [build-and-push-docker-image]
+      - deploy-clusters:
+          requires: [deploy-infrastructure]
 # Build environment to lint project files - DONE
 # Lint docker image and python files - DONE
 # Create ECR repo (or check it exists) - DONE
