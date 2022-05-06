@@ -84,22 +84,22 @@ jobs:
               --stack-name "capstone-project" \
               --parameter-overrides ID="capstone-project"
 
-    deploy-clusters:
-      docker:
-        - image: amazon/aws-cli
-      steps:
-        - checkout
-        - run: yum -y install tar gzip
-        - run:
-            name: Install eksctl
-            command: |
-              curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-              sudo mv /tmp/eksctl /usr/local/bin
-              echo eksctl version
-        - run:
-            name: Spin up ECS cluster
-            command: |
-              eksctl create cluster -f cluster.yml
+  deploy-clusters:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run: yum -y install tar gzip
+      - run:
+          name: Install eksctl
+          command: |
+            curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+            sudo mv /tmp/eksctl /usr/local/bin
+            echo eksctl version
+      - run:
+          name: Spin up ECS cluster
+          command: |
+            eksctl create cluster -f cluster.yml
 
 workflows:
   deployment:
