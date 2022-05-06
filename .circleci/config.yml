@@ -103,13 +103,14 @@ jobs:
       - run:
           name: Spin up ECS cluster
           command: |
-            CLUSTER=EKS-Capstone-Cluster
-            CHECK_NAME==$(aws eks list-clusters | jq -r ".clusters" | grep $CLUSTER || true)
+            export CHECK_NAME==$(aws eks list-clusters --query 'clusters[0]' |
+            --output text)
+
             if [ "$CHECK_NAME" != "" ]; then
-                echo "$CLUSTER already exists, will use existing cluster"
+                echo "$CHECK_NAME already exists, will use existing cluster"
                 exit 0
             else
-                echo "No cluster by this name $CLUSTER, will continue"
+                echo "No cluster by this name $CHECK_NAME, will continue"
                 eksctl create cluster -f cluster.yml
             fi
 
