@@ -49,18 +49,18 @@ jobs:
           name: Install dependencies
           command: |
             apk add --no-cache \
-              py-pip
-            pip install \
+              py3-pip
+            pip3 install \
               docker-compose==1.29.2 \
               awscli==1.23.7
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "requirements.txt" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-          paths:
-            - ./venv
-            - /caches/app.tar
+      # - restore_cache:
+      #     keys:
+      #       - v1-dependencies-{{ checksum "requirements.txt" }}
+      #       # fallback to using the latest cache if no exact match is found
+      #       - v1-dependencies-
+      #     paths:
+      #       - ./venv
+      #       - /caches/app.tar
 
       - run:
           name: Ensure ECR exists
