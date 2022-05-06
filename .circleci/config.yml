@@ -135,6 +135,7 @@ jobs:
           name: Deploy app to cluster
           command: |
             kubectl apply -f deployment.yml
+            kubectl get svc
 
       - run:
           name: Run service
