@@ -89,6 +89,7 @@ jobs:
       - image: guitarrapc/docker-awscli-kubectl
     steps:
       - checkout
+      - setup_remote_docker
       # - run: yum -y install tar gzip
       # - run:
       #     name: Install eksctl
