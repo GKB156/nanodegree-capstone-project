@@ -81,8 +81,8 @@ jobs:
             aws cloudformation deploy \
               --template-file aws-infra.yml \
               --tags project=capstone \
-              --stack-name "capstone-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
+              --stack-name "capstone-project" \
+              --parameter-overrides ID="capstone-project"
 
 workflows:
   deployment:
