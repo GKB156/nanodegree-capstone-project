@@ -71,14 +71,18 @@ jobs:
             fi
 
   deploy-infrastructure:
-    - run:
-        name: Ensure aws infrastructure exists
-        command: |
-          aws cloudformation deploy \
-            --template-file aws-infra.yml \
-            --tags project=capstone \
-            --stack-name "capstone-${CIRCLE_WORKFLOW_ID:0:7}" \
-            --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Ensure aws infrastructure exists
+          command: |
+            aws cloudformation deploy \
+              --template-file aws-infra.yml \
+              --tags project=capstone \
+              --stack-name "capstone-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
 
 workflows:
   deployment:
