@@ -268,6 +268,21 @@ Resources:
       GroupDescription: Cluster communication with worker nodes
       VpcId: !Ref VPC
 
+  # EKSCluster:
+  #   Type: AWS::EKS::Cluster
+  #   Properties:
+  #     Name: EKS-Capstone-Cluster
+  #     Region: us-east-1
+  #       ResourcesVpcConfig:
+  #         SecurityGroupIds:
+  #         - !Ref ControlPlaneSecurityGroup
+  #         SubnetIds:
+  #         - !Ref PublicSubnet01
+  #         - !Ref PublicSubnet02
+  #         - !Ref PrivateSubnet01
+  #         - !Ref PrivateSubnet02
+  #   DependsOn: [PublicSubnet01, PublicSubnet02, PrivateSubnet01, PrivateSubnet02, ControlPlaneSecurityGroup]
+
 Outputs:
   SubnetIds:
     Description: Subnets IDs in the VPC
