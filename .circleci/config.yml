@@ -93,6 +93,9 @@ jobs:
           name: Install dependencies
           command: |
             apk add curl
+            apk add --no-cache python3 py3-pip
+            pip3 install --upgrade pip
+            pip3 install awscli
             curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.22.6/2022-03-09/bin/linux/amd64/kubectl
             curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
             mv /tmp/eksctl /usr/local/bin
@@ -100,7 +103,15 @@ jobs:
       - run:
           name: Spin up ECS cluster
           command: |
-            eksctl create cluster -f cluster.yml
+            CLUSTER=EKS-Capstone-Cluster
+            CHECK_NAME==$(aws eks list-clusters | jq -r ".clusters" | grep $CLUSTER || true)
+            if [ "$CHECK_NAME" != "" ]; then
+                echo "$CLUSTER already exists, will use existing cluster"
+                exit 0
+            else
+                echo "No cluster by this name $CLUSTER, will continue"
+                eksctl create cluster -f cluster.yml
+            fi
 
   deploy-app-to-clusters:
     docker:
