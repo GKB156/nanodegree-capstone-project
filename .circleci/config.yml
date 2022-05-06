@@ -84,6 +84,11 @@ jobs:
               --stack-name "capstone-project" \
               --parameter-overrides ID="capstone-project"
 
+      - run:
+          name: Spin up ECS cluster
+          command: |
+            eksctl create cluster -f cluster.yml
+
 workflows:
   deployment:
     jobs:
