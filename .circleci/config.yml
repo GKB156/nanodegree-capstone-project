@@ -128,9 +128,6 @@ jobs:
             mkdir -p $HOME/bin && cp -i ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
             kops export kubecfg "EKS-Capstone-Cluster"
             mv ./kubectl /usr/local/bin/kubectl
-            # mkdir -p $HOME/.kube
-            # sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-            # sudo chown $(id -u):$(id -g) $HOME/.kube/config
             kubectl version --short --client
 
             curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
