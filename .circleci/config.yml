@@ -101,9 +101,9 @@ jobs:
             mv /tmp/eksctl /usr/local/bin
 
       - run:
-          name: Spin up ECS cluster
+          name: Spin up EKS cluster
           command: |
-            export CHECK_NAME==$(aws eks list-clusters --query 'clusters[0]')
+            export CHECK_NAME=$(aws eks list-clusters --query 'clusters[0]')
 
             if [ "$CHECK_NAME" != "" |  "$CHECK_NAME" != "=null"]; then
                 echo "$CHECK_NAME already exists, will use existing cluster"
