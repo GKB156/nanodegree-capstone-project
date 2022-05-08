@@ -96,7 +96,7 @@ jobs:
             apk add --no-cache python3 py3-pip
             pip3 install --upgrade pip
             pip3 install awscli
-            # curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.22.6/2022-03-09/bin/linux/amd64/kubectl
+            curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.22.6/2022-03-09/bin/linux/amd64/kubectl
             curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
             mv /tmp/eksctl /usr/local/bin
 
@@ -104,8 +104,7 @@ jobs:
           name: Spin up EKS cluster
           command: |
             export CHECK_NAME==$(aws eks list-clusters --query 'clusters[0]')
-
-            if [ "$CHECK_NAME" != ""]; then
+            if [ "$CHECK_NAME" != "" ]; then
                 echo "$CHECK_NAME already exists, will use existing cluster"
                 exit 0
             else
