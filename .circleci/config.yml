@@ -124,10 +124,17 @@ jobs:
             apk add --update openssl
             curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
             openssl sha1 -sha256 kubectl
+
             chmod +x ./kubectl
-            mkdir -p $HOME/bin && cp -i ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
+            mkdir -p $HOME/bin
+            cp -i ./kubectl $HOME/bin/kubectl
+            export PATH=$HOME/bin:$PATH
+            export $HOME/.kube/config
+            chown $(id -u):$(id -g) $HOME/.kube/config
+
+            echo 'export $HOME/.kube/config' >> $HOME/.basrc
             echo HOME: $HOME
-            echo PATH = $PATH
+            echo PATH: $PATH
             mv ./kubectl /usr/local/bin/kubectl
             kubectl version --short --client
 
@@ -136,7 +143,7 @@ jobs:
       - run:
           name: Deploy app to cluster
           command: |
-            kubectl get svc
+            # kubectl get svc
             kubectl apply -f deployment.yml
 
       - run:
