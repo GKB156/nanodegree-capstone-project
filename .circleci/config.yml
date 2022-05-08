@@ -126,7 +126,8 @@ jobs:
             openssl sha1 -sha256 kubectl
             chmod +x ./kubectl
             mkdir -p $HOME/bin && cp -i ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
-            export kubecfg "EKS-Capstone-Cluster"
+            echo HOME: $HOME
+            echo PATH = $PATH
             mv ./kubectl /usr/local/bin/kubectl
             kubectl version --short --client
 
