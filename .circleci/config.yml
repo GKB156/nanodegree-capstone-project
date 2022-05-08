@@ -103,7 +103,7 @@ jobs:
       - run:
           name: Spin up EKS cluster
           command: |
-            export CHECK_NAME=$(aws eks list-clusters --query 'clusters[0]')
+            export CHECK_NAME==$(aws eks list-clusters --query 'clusters[0]')
 
             if [ "$CHECK_NAME" != ""];
             then
