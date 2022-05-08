@@ -105,9 +105,7 @@ jobs:
             mkdir -p $HOME/bin
             cp -i ./kubectl $HOME/bin/kubectl
             export PATH=$HOME/bin:$PATH
-            chown $(id -u):$(id -g) $HOME/.kube/config
 
-            echo 'export $HOME/.kube/config' >> $HOME/.basrc
             echo HOME: $HOME
             echo PATH: $PATH
             mv ./kubectl /usr/local/bin/kubectl
@@ -145,9 +143,7 @@ jobs:
             mkdir -p $HOME/bin
             cp -i ./kubectl $HOME/bin/kubectl
             export PATH=$HOME/bin:$PATH
-            chown $(id -u):$(id -g) $HOME/.kube/config
 
-            echo 'export $HOME/.kube/config' >> $HOME/.basrc
             echo HOME: $HOME
             echo PATH: $PATH
             mv ./kubectl /usr/local/bin/kubectl
