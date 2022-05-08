@@ -94,9 +94,25 @@ jobs:
           command: |
             apk add curl
             apk add --no-cache python3 py3-pip
+            apk add --update openssl
             pip3 install --upgrade pip
             pip3 install awscli
-            curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.22.6/2022-03-09/bin/linux/amd64/kubectl
+
+            curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+            openssl sha1 -sha256 kubectl
+
+            chmod +x ./kubectl
+            mkdir -p $HOME/bin
+            cp -i ./kubectl $HOME/bin/kubectl
+            export PATH=$HOME/bin:$PATH
+            chown $(id -u):$(id -g) $HOME/.kube/config
+
+            echo 'export $HOME/.kube/config' >> $HOME/.basrc
+            echo HOME: $HOME
+            echo PATH: $PATH
+            mv ./kubectl /usr/local/bin/kubectl
+            kubectl version --short --client
+
             curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
             mv /tmp/eksctl /usr/local/bin
 
@@ -129,7 +145,6 @@ jobs:
             mkdir -p $HOME/bin
             cp -i ./kubectl $HOME/bin/kubectl
             export PATH=$HOME/bin:$PATH
-            export $HOME/.kube/config
             chown $(id -u):$(id -g) $HOME/.kube/config
 
             echo 'export $HOME/.kube/config' >> $HOME/.basrc
