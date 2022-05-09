@@ -104,10 +104,10 @@ jobs:
             chmod +x ./kubectl
             mkdir -p $HOME/bin
             cp -i ./kubectl $HOME/bin/kubectl
-            export PATH=$PATH:$HOME/bin
+            export PATH="/usr/local/bin:$PATH"
 
             echo HOME: $HOME
-            echo PATH: $PATH:$HOME/bin
+            echo PATH: $/usr/local/bin:$PATH
 
             kubectl version --short --client
 
@@ -142,10 +142,10 @@ jobs:
             chmod +x ./kubectl
             mkdir -p $HOME/bin
             cp -i ./kubectl $HOME/bin/kubectl
-            export PATH=$PATH:$HOME/bin
+            export PATH="/usr/local/bin:$PATH"
 
             echo HOME: $HOME
-            echo PATH: $PATH:$HOME/bin
+            echo PATH: /usr/local/bin:$PATH
 
             kubectl version --short --client
 
