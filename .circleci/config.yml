@@ -98,20 +98,17 @@ jobs:
             pip3 install --upgrade pip
             pip3 install awscli
 
-            curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.22.8/bin/linux/amd64/kubectl
+            curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.22.6/2022-03-09/bin/darwin/amd64/kubectl
             openssl sha1 -sha256 kubectl
 
             chmod +x ./kubectl
-            mkdir -p $HOME/.kube
-            cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-            chown $(id -u):$(id -g) $HOME/.kube/config
-            # mkdir -p $HOME/bin
-            # cp -i ./kubectl $HOME/bin/kubectl
-            # export PATH=$HOME/bin:$PATH
+            mkdir -p $HOME/bin
+            cp -i ./kubectl $HOME/bin/kubectl
+            export PATH=$PATH:$HOME/bin
 
             echo HOME: $HOME
-            # echo PATH: $PATH
-            # mv ./kubectl /usr/local/bin/kubectl
+            echo PATH: $PATH:$HOME/bin
+
             kubectl version --short --client
 
             curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
@@ -139,20 +136,17 @@ jobs:
           command: |
             apk add curl
             apk add --update openssl
-            curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.22.8/bin/linux/amd64/kubectl
+            curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.22.6/2022-03-09/bin/darwin/amd64/kubectl
             openssl sha1 -sha256 kubectl
 
             chmod +x ./kubectl
-            mkdir -p $HOME/.kube
-            cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-            chown $(id -u):$(id -g) $HOME/.kube/config
-            # mkdir -p $HOME/bin
-            # cp -i ./kubectl $HOME/bin/kubectl
-            # export PATH=$HOME/bin:$PATH
+            mkdir -p $HOME/bin
+            cp -i ./kubectl $HOME/bin/kubectl
+            export PATH=$PATH:$HOME/bin
 
             echo HOME: $HOME
-            # echo PATH: $PATH
-            # mv ./kubectl /usr/local/bin/kubectl
+            echo PATH: $PATH:$HOME/bin
+
             kubectl version --short --client
 
             curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
