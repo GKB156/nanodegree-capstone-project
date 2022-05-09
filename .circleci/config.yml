@@ -107,7 +107,7 @@ jobs:
             export PATH="/usr/local/bin:$PATH"
 
             echo HOME: $HOME
-            echo PATH: $/usr/local/bin:$PATH
+            echo PATH: /usr/local/bin:$PATH
 
             kubectl version --short --client
 
