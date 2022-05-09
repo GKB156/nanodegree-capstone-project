@@ -98,7 +98,7 @@ jobs:
             pip3 install --upgrade pip
             pip3 install awscli
 
-            curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+            curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.23.6/bin/linux/amd64/kubectl
             openssl sha1 -sha256 kubectl
 
             chmod +x ./kubectl
@@ -136,7 +136,7 @@ jobs:
           command: |
             apk add curl
             apk add --update openssl
-            curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+            curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.23.6/bin/linux/amd64/kubectl
             openssl sha1 -sha256 kubectl
 
             chmod +x ./kubectl
