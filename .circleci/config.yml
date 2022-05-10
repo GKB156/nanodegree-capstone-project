@@ -151,7 +151,7 @@ jobs:
       - run:
           name: Deploy app to cluster
           command: |
-            chmod +x ./kubectl
+            kubectl apply -f eks-console-full-access.yaml
             kubectl get svc
             kubectl apply -f deployment.yml
 
