@@ -151,6 +151,7 @@ jobs:
       - run:
           name: Deploy app to cluster
           command: |
+            chmod +x ./kubectl
             kubectl get svc
             kubectl apply -f deployment.yml
 
