@@ -182,7 +182,6 @@ workflows:
           checkout: true
           aws-cli-version: latest
           aws-access-key-id: AWS_ACCESS_KEY_ID
-          account-url: AWS_ECR_URL
           registry-id: REGISTRY_ID
           region: AWS_DEFAULT_REGION
           repo: capstone-project
