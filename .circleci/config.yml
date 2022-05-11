@@ -50,13 +50,11 @@ jobs:
       - run:
           name: Build Docker Image
           command: |
-            export TAG=${CIRCLE_WORKFLOW_ID:0:7}
+            export TAG=latest
             export IMAGE_NAME=${REPO_NAME}
             docker build -t $IMAGE_NAME:$TAG .
 
   deploy-application:
-    environment:
-      VERSION: ${CIRCLE_WORKFLOW_ID:0:7}
     docker:
       - image: "cimg/base:stable"
     parameters:
@@ -156,11 +154,11 @@ workflows:
           registry-id: REGISTRY_ID
           region: "${AWS_DEFAULT_REGION}"
           repo: capstone-project
-          tag: ${CIRCLE_WORKFLOW_ID:0:7}
+          tag: latest
       - deploy-application:
           cluster-name: EKS-Capstone-Cluster
           aws-region: "$AWS_DEFAULT_REGION"
-          docker-image-name: "${AWS_ECR_URL}:${CIRCLE_WORKFLOW_ID:0:7}"
+          docker-image-name: "${AWS_ECR_URL}:latest"
           version-info: "${CIRCLE_SHA1}"
           requires:
             - aws-ecr/build-and-push-image
