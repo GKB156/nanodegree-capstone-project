@@ -184,8 +184,8 @@ workflows:
           registry-id: REGISTRY_ID
           region: "${AWS_DEFAULT_REGION}"
           repo: capstone-project
-          dockerfile: ~/project/Dockerfile
-          path: ~/project/
+          dockerfile: ~/Dockerfile
+          path: ~/
           tag: v${CIRCLE_BUILD_NUM}
       # - aws-eks/create-cluster:
       #     cluster-name: eks-orb-capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
