@@ -50,7 +50,7 @@ jobs:
       - run:
           name: Build Docker Image
           command: |
-            export TAG=v${CIRCLE_BUILD_NUM}
+            export TAG=${CIRCLE_WORKFLOW_ID:0:7}
             export IMAGE_NAME=${REPO_NAME}
             docker build -t $IMAGE_NAME:$TAG .
 
@@ -147,16 +147,18 @@ workflows:
       - run-linter
       - build-docker-image
       - aws-ecr/build-and-push-image:
+          requires:
+            - build-docker-image
           aws-cli-version: latest
           aws-access-key-id: AWS_ACCESS_KEY_ID
           registry-id: REGISTRY_ID
           region: "${AWS_DEFAULT_REGION}"
           repo: capstone-project
-          tag: v${CIRCLE_BUILD_NUM}
+          tag: ${CIRCLE_WORKFLOW_ID:0:7}
       - deploy-application:
           cluster-name: EKS-Capstone-Cluster
           aws-region: "$AWS_DEFAULT_REGION"
-          docker-image-name: "${AWS_ECR_URL}:v${CIRCLE_BUILD_NUM}"
+          docker-image-name: "${AWS_ECR_URL}:${CIRCLE_WORKFLOW_ID:0:7}"
           version-info: "${CIRCLE_SHA1}"
           requires:
             - aws-ecr/build-and-push-image
