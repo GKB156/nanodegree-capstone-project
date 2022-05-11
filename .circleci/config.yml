@@ -179,6 +179,9 @@ workflows:
       #     requires:
       #       - [build-docker-image]
       - aws-ecr/build_and_push_image:
+          requires:
+            - [build-docker-image]
+          - checkout
           name: build-and-push-image-ecr
           aws-access-key-id: AWS_ACCESS_KEY_ID
           account-url: AWS_ECR_URL
