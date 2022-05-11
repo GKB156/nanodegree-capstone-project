@@ -182,7 +182,7 @@ workflows:
           aws-cli-version: latest
           aws-access-key-id: AWS_ACCESS_KEY_ID
           registry-id: REGISTRY_ID
-          region: AWS_DEFAULT_REGION
+          region: "${AWS_DEFAULT_REGION}"
           repo: capstone-project
           dockerfile: ~/project/Dockerfile
           path: ~/project/
