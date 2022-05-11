@@ -85,14 +85,14 @@ jobs:
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: deployment.yml
-          resource-name: app-deployment
+          resource-name: deployment/app-deployment
           show-kubectl-command: true
-      - kubernetes/create-or-update-resource:
-          resource-file-path: "deployment.yml"
-          get-rollout-status: true
-          resource-name: deployment/capstone
-      - kubernetes/create-or-update-resource:
-          resource-file-path: "deployments/deployment.yml"
+      # - kubernetes/create-or-update-resource:
+      #     resource-file-path: "deployment.yml"
+      #     get-rollout-status: true
+      #     resource-name: deployment/capstone
+      # - kubernetes/create-or-update-resource:
+      #     resource-file-path: "deployment/deployment.yml"
 
   # test-application:
   #   executor: aws-eks/python3
