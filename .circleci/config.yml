@@ -179,7 +179,6 @@ workflows:
       #     requires:
       #       - [build-docker-image]
       - aws-ecr/build-and-push-image:
-          checkout: true
           aws-cli-version: latest
           aws-access-key-id: AWS_ACCESS_KEY_ID
           registry-id: REGISTRY_ID
