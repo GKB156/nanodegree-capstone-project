@@ -181,8 +181,8 @@ workflows:
       - aws-ecr/build_and_push_image:
           name: build-and-push-image-ecr
           aws-access-key-id: AWS_ACCESS_KEY_ID
-          account-url: AWS_ECR_URL
-          region: AWS_DEFAULT_REGION
+          account-url: ${AWS_ECR_URL}
+          region: ${AWS_DEFAULT_REGION}
           repo: capstone-project
           dockerfile: ~/project/Dockerfile
           path: ~/project/
