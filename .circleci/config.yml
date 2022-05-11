@@ -83,6 +83,7 @@ jobs:
           install-kubectl: true
           aws-region: << parameters.aws-region >>
       - kubernetes/create-or-update-resource:
+          envsubst: true
           get-rollout-status: true
           resource-file-path: deployment.yml
           resource-name: deployment.apps/capstone-server
