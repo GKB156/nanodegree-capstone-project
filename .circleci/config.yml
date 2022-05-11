@@ -55,6 +55,8 @@ jobs:
             docker build -t $IMAGE_NAME:$TAG .
 
   deploy-application:
+    environment:
+      VERSION: ${CIRCLE_WORKFLOW_ID:0:7}
     docker:
       - image: "cimg/base:stable"
     parameters:

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: capstone-project-container
-          image: ${AWS_ECR_URL}:${CIRCLE_WORKFLOW_ID:0:7}
+          image: ${AWS_ECR_URL}:${VERSION}
           ports:
             # - containerPort: 80
             - containerPort: 5000
