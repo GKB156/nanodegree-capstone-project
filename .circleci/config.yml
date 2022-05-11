@@ -90,7 +90,7 @@ jobs:
       - kubernetes/create-or-update-resource:
           resource-file-path: "deployment.yml"
           get-rollout-status: true
-          resource-name: app-deployment
+          resource-name: deployment/capstone
       - kubernetes/create-or-update-resource:
           resource-file-path: "deployments/deployment.yml"
 
