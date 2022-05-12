@@ -1,25 +1,25 @@
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: capstone-project-service
-# spec:
-#   type: NodePort
-#   selector:
-#     app: web
-#   ports:
-#     - nodePort: 31479
-#       port: 5000
-#       targetPort: 80
 apiVersion: v1
 kind: Service
 metadata:
   name: capstone-project-service
 spec:
-  type: LoadBalancer
-  ports:
-    - port: 5000
-      protocol: TCP
-      # targetPort: 80
-      nodePort: 31479
+  type: NodePort
   selector:
     app: web
+  ports:
+    - nodePort: 31479
+      port: 5000
+      targetPort: 80
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: capstone-project-service
+# spec:
+#   type: LoadBalancer
+#   ports:
+#     - port: 5000
+#       protocol: TCP
+#       targetPort: 80
+#       nodePort: 31479
+#   selector:
+#     app: web
