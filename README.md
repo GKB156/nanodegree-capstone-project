@@ -16,3 +16,4 @@ Go to localhost:5000
 Run aws-infra.yml to create networking infrastructure for cluster
 Run create-cluster.sh to create Cloudformation stacks for EKS cluster
 cluster.yml includes all stack info to create clusters
+Cluster built separately using eksctl create cluster -f cluster.yml

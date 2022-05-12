@@ -19,3 +19,23 @@ spec:
           ports:
             # - containerPort: 80
             - containerPort: 5000
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: flaskapi
+#   namespace: default
+# spec:
+#   replicas: 2
+#   selector:
+#     matchLabels:
+#       app: flaskapi
+#   template:
+#     metadata:
+#       labels:
+#         app: flaskapi
+#     spec:
+#       containers:
+#         - name: flaskapi
+#           image: ${AWS_ECR_URL}:latest
+#           ports:
+#             - containerPort: 80
