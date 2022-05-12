@@ -20,7 +20,7 @@ spec:
   ports:
     - port: 5000
       protocol: TCP
-      # targetPort: 80
+      targetPort: 80
       nodePort: 31479
   selector:
     app: web
