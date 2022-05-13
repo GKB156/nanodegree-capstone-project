@@ -11,21 +11,3 @@ spec:
       targetPort: 5000
   selector:
     app: web
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: capstone-project-service
-# spec:
-#   type: NodePort
-#   selector:
-#     app: web
-#   ports:
-#     - nodePort: 31479
-#       port: 5000
-#       targetPort: 80
-
-# serves on port 5000 and connects to the containers on port 80
-# - nodePort: 31479
-#   port: 5000
-#   targetPort: 80
-# kubectl port-forward svc/my-service 5000                  # listen on local port 5000 and forward to port 5000 on Service backend

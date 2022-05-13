@@ -88,12 +88,11 @@ jobs:
           resource-file-path: deployment.yml
           resource-name: deployment.apps/capstone-server
           show-kubectl-command: true
-      # - kubernetes/create-or-update-resource:
-      #     envsubst: true
-      #     get-rollout-status: true
-      #     resource-file-path: service.yml
-      #     resource-name: service/capstone-project-service
-      #     show-kubectl-command: true
+      - kubernetes/create-or-update-resource:
+          envsubst: true
+          resource-file-path: service.yml
+          resource-name: service/capstone-project-service
+          show-kubectl-command: true
 
   # test-application:
   #   executor: aws-eks/python3

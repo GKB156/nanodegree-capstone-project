@@ -18,4 +18,3 @@ spec:
           image: 343591568300.dkr.ecr.us-east-1.amazonaws.com/capstone-project:latest
           ports:
             - containerPort: 5000
-            # - containerPort: 80
