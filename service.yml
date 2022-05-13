@@ -8,7 +8,7 @@ spec:
     - nodePort: 31479
       protocol: TCP
       port: 5000
-      targetPort: 80
+      targetPort: 5000
   selector:
     app: web
 # apiVersion: v1
