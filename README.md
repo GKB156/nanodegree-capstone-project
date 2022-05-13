@@ -27,7 +27,7 @@ You will need:
 
 2. Create AWS networking infrastructure\
    Firstly run `aws cloudformation deploy --template-file aws-infra.yml --stack-name <chosen-name>` to set up the network infrastructure\
-   Then run `eksctl create cluster -f cluster.yml` to create an EKS cluster linked to the network
+   Then run `eksctl create cluster -f cluster.yml` to create an EKS cluster linked to the network - please note that you'll need to update cluster.yml with your newly created VPC and subnet IDs from the previous step
 
 3. Run the jobs in the CircleCI pipeline
    Go to CircleCI and trigger the pipeline to run\
