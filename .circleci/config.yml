@@ -95,7 +95,8 @@ jobs:
           show-kubectl-command: true
 
   test-application:
-    executor: aws-eks/python3
+    docker:
+      - image: "cimg/base:stable"
     parameters:
       cluster-name:
         description: |
@@ -123,7 +124,8 @@ jobs:
             kubectl get services
 
   undeploy-application:
-    executor: aws-eks/python3
+    docker:
+      - image: "cimg/base:stable"
     parameters:
       cluster-name:
         description: |
