@@ -155,6 +155,8 @@ workflows:
     jobs:
       - run-linter
       - build-docker-image
+        requires:
+          - run-linter
       - aws-ecr/build-and-push-image:
           requires:
             - build-docker-image
